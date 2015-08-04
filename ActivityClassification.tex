@@ -1,0 +1,365 @@
+
+%\documentclass[10pt]{article}
+% \documentclass[10pt, conference,onecolumn]{IEEEtran}
+\documentclass[10pt,myheadings]{IEEEtran}
+\usepackage{balance}
+\usepackage{datetime}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{floatflt}
+\usepackage{boxedminipage}
+\usepackage{flushend}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{cite}
+\newcommand{\matr}[1]{\bm{#1}}
+\newcommand{\hsa}{\hspace{.05in}}
+\newcommand{\hsb}{\hspace{.25in}}
+\newcommand{\hsc}{\hspace{.40in}}
+\newcommand{\hsd}{\hspace{.55in}}
+\newcommand{\hse}{\hspace{.70in}}
+\newcommand{\hsf}{\hspace{.85in}}
+\newcommand{\bbmp}{\begin{boxedminipage}}
+\newcommand{\ebmp}{\end{boxedminipage}}
+\newcommand{\bmp}{\begin{minipage}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\fn}{\footnote}
+\newcommand{\noin}{\noindent}
+\newcommand{\n}{\indent}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\renewcommand{\baselinestretch}{1.0}
+\pagestyle{headings} 
+
+
+\markboth{Activity Detection 2015}{(\today)\hspace{.2in} Sikder and Sarkar, Activity Detection}
+\flushbottom			
+
+\begin{document}
+
+\title{Human-Activity Monitoring and Recognition Using Motion Sensors}
+\author{Faisal Sikder and Dilip Sarkar\thanks{Faisal Sikder and Dilip Sarkar
+are with the Department of Computer Science, University of Miami.  E-Mails:
+ f.sikder@umiami.edu and sarkar@miami.edu}
+\thanks{IPDPS 2014: \today }}
+\maketitle
+	
+	\section{Linear Regression Model}
+	\label{LinearRegressionModel}
+	Let $X = [X_1,X_2,.....X_m]$  be a matrix of $n$ rows and $m$ columns, where each $X_j=[x_{1j},x_{2j}, \cdots, x_{nj}]^T$, for $1\le j\le m$, is a column of $n$ elements. Let $y = [y_1,y_2,......,y_n]^T$ be a column vector of $n$ elements.
+	
+	Let a linear model $f(\cdot)$ relate  element $y_i$ of $y$ with $i$th row, 
+	[$x_{i1}, x_{i2},\cdots , x_{im}$], of $X$. Mathematically,
+	\begin{equation}
+	y_i =  f(x_{i1},x_{i2},\cdots, x_{im}) =\beta_0+\beta_1 x_{i1}+\cdots +\beta_m x_{im} 
+	\label{LinearModel}
+	\end{equation}
+	If we denote $ \beta =[\beta_0,\beta_1,......\beta_m]^T$ as a column vector, Equation \ref{LinearModel} can be rewritten as,
+  
+	$$
+	       y_i =[1,x_{i1},x_{i2},\cdots,x_{im}]\beta.
+ $$
+	   
+	Inserting a `1' before the first element of each row of $X$, we get a matrix of $n$ rows and $(m+1)$ columns, 
+	$\boldsymbol{X}$ = [1,$X$]. Now using matrix notation we can write,
+	\begin{equation}
+		\label{equ:LinearModelMatrixForm}
+	y = f(\boldsymbol{X}) = \matr{X}\beta
+	\end{equation}
+	
+	Suppose $y$ and $X$ are obtained from observing a system, and we want to estimate a model $\hat{f}(\cdot)$ from the data. This is equivalent to estimating values of $\beta$ from $y$ and $\matr{X}$. Let  $\hat{\beta}$ denote  an estimate of $\beta$, that is, $\hat{\beta} = [\hat{\beta}_0, \hat{\beta}_1, \cdots,\hat{\beta}_m]$. 
+	Now the approximation of $y$ from $\matr{X}$ using $\hat{f}({\cdot})$ (that is, $\hat{\beta}$)	can be written as,
+	\begin{equation}
+		\label{equ:function-with-beta}
+	\hat{y} = \hat{f}(\boldsymbol{X}) = \matr{X}\hat{\beta}
+	\end{equation}
+	
+	\par
+	The selection of the parameters $\hat{\beta}$ for approximation of the function $\hat{f}(\cdot)$ depends on the minimization of errors,
+\begin{equation}
+error_i = y_i - [1,x_{i1},x_{i2},\cdots,x_{im}]\hat{\beta}.
+\label{eq:Error}
+\end{equation}
+By far the most popular method for selection of $\hat{\beta}$ is that minimizes the \emph{residual sum of squares} 
+\cite{Hastie2008}.
+
+\begin{equation}
+RSS(\hat{\beta}) = \sum_{i=1}^n \left(y_i-[1,x_{i1},x_{i2},\cdots,x_{im}]\hat{\beta}\right)^2
+\label{eq:rssError}
+\end{equation}
+Let us denote mean of $ RSS(\hat{\beta})$ as $\bar{e}$,
+
+\begin{equation}
+\bar{e}= RSS(\hat{\beta})/n
+\label{eq:MeanError}
+\end{equation}
+
+Being a quadratic function of the parameters $\hat{\beta}$, its minimum always exits. The minimum is unique if
+	%\par The system modeled by Equation \ref{(equ:function-with-beta)}The Assuming
+	$\boldsymbol{X^TX}$ is nonsingular, and  the corresponding approximation of $\beta$ is given by
+	\begin{equation}
+	\hat{\beta} = (\boldsymbol{X^TX})^{-1}\boldsymbol{X}^Ty.
+		\label{equ:linRegression}
+	\end{equation}
+	Above result can be found in any standard book on matrix computation, but completeness, next we state it as a theorem.
+	\begin{theorem} \emph{(Least square error model\cite{MatrixCompStewart1973} )}
+	\label{LeastSquareErrorModel}
+The linear model in Equation~\ref{equ:LinearModelMatrixForm} that minimizes sum of squared error (given by Equation~\ref{eq:rssError}) always has a solution. The solution is unique if and only if $\matr{X}^T\matr{X}$ is nonsingular.
+	\end{theorem}
+	\hfill\qed
+	%The approximation method in equation (\ref{equ:linRegression}) minimizes residual sum of squares[reference]. 
+	%\begin{equation}
+	%\sum_{i=1}^{n}(\hat{y_i}-y_i)^2 \nonumber
+	%\end{equation} 
+	
+	From this estimated model $\hat{f}(.)$ we can get an estimate of $y_k$ from a new observation $x_k$.
+	Expressing in vector-matrix notation, 
+	
+	\begin{equation}
+	\label{equ:estimated-y}
+	\hat{y} = \boldsymbol{X}\hat{\beta}.
+	\end{equation}
+	
+It is also important to recall that vector $\hat{\beta}$ points in the steepest uphill direction  in the input subspace \cite{Hastie2008}. Therefore, two characterizing features of the data are 
+$\hat{\beta}$ and $RSS(\hat{\beta})$. In this study we will use both of these features. 
+\par
+Before we discuss their applications for identification of daily activities, we briefly introduce entropy, KL-distance, and establish some of its relation to \emph{log-sum measures} of two sequences of positive numbers.
+% The concept of --- a novel concept introduce here. 
+
+\section{Kullback-Leibler divergence and Log-Sum inequality}
+\label{KL-distAndLogSumInequalities}
+
+%First we define entropy and then use it to define Kullback-Leibler divergence, and state an inequality. 
+%Then we introduce our novel log-sum measure and relate it Kullback Leibler divergence.
+
+\subsection{Entropy and KL-divergence}
+\label{sec:EntropyAndKLDivergence}
+Let $p = \{p_1,p_2,\cdots,p_m\}$ and $q = \{q_1,q_2,\cdots,q_m\}$ be two probability mass distributions. Note that $p$ and $q$ satisfy all axioms of probability mass distributions, including$\sum_{i=1}^m p_i = \sum_{i=1}^m q_i = 1$. 
+\par
+\begin{definition} (\emph{Entropy}) The \emph{entropy} $H(p)$ of a probability mass distribution $p$ is defined by
+\begin{equation}
+H(p) = - \sum_{i=1}^m p_i \log p_i
+\label{eq:Entropy}
+\end{equation}
+\qed
+\end{definition}
+\par
+	\begin{definition} (\emph{KL-distance} \cite{Cover2006}) The \emph{Kullback-Leibler distance} or \emph{KL-distance} or
+	\emph{relative entropy}	between two probability mass distributions $p$ and $q$ is defined as,
+\begin{equation}
+D(p||q) = \sum_{i=1}^m p_i \log \frac{p_i}{q_i}
+\label{eq:KL-distance}
+\end{equation}
+	\qed
+	\end{definition} 
+	
+	\begin{theorem}
+	\label{KL-dist-inequality}
+	(\emph{KL-distance inequality \cite{Cover2006}}) For two probability mass distributions $p$ and $q$
+	\begin{equation}
+	D(p||q) \geq 0.
+	\label{eq:KL-distInequality}
+	\end{equation}
+	Equality holds if and only if $p_i = q_i$ for all $1 \leq i \leq m$. \qed
+\end{theorem}
+
+While above theorem is used in many applications to measure entropy distance between probability mass distributions $p$ and $q$, it should be noted that the measure is not symmetric, that is, $D(p||q) \neq D(q||p)$ unless $p$ and $q$ are identical. 
+For application that benefits from a symmetric measure, sum of $D(p||q)$ and $D(q||p)$ is used, and the corresponding inequality is
+\begin{equation}
+D(p||q) + D(q||p) \geq 0
+\label{eq:SymmetricKLdist}
+\end{equation}
+	%Using Jensen's inequality  and the fact that the function $f(x) = x\log x$ is strictly convex for $x>0$  the following theorem for two sequences of positive numbers can be proved.
+	%\begin{theorem} (\emph{Log sum inequality \cite{Cover2006}})
+	%For two sequences of positive numbers $a_1,a_2,\cdots,a_m$ and $b_1,b_2,\cdots,b_m$, 
+	%\begin{equation}
+	%\sum_{i=1}^ma_i\log\frac{a_i}{b_i} \geq \left(\sum_{i=1}^m a_i\right) \log\frac{\sum_{i=1}^m a_i}{\sum_{i=1}^mb_i}
+	%\label{eq:logSumInequality}
+	%\end{equation}
+	%with equality if and only if the ratio $\frac{a_i}{b_i}$ is constant for all $i$. 
+	%\end{theorem}
+	%
+	Next we introduce a symmetric log-sum distance measure for two sequences of positive numbers of identical length.
+	
+\subsection{Log-Sum Distance}
+\label{sec:LogSumKLDiv}
+
+	\begin{definition} (\emph{Log-Sums distance})
+	For two sequences of positive numbers $U~=~<~u_1,u_2,\cdots,u_m>$ and $V~=~<v_1,v_2,\cdots,v_m> $ log-sum distance of $U$ and $V$ is defined as,
+	\begin{equation}
+	LD(U||V) = \sum_{i=1}^m u_i\log\frac{u_i}{v_i} + \sum_{i=1}^m v_i\frac{v_i}{u_i}
+	\label{eq:LogSumDist}
+	\end{equation}	
+	\end{definition}
+	\par
+	Next we show that $LD(U||V)$ is nonnegation.
+	
+	\begin{theorem} (\emph{Log-sums inequality})
+	\label{LogSumInequality}
+	For two sequences of positive numbers $U~=~<~u_1,u_2,\cdots,u_m>$ and $V~=~<v_1,v_2,\cdots,v_m> $,
+	\begin{equation}
+	LD(U||V) \geq 0
+	\label{eq:logSumIneq}
+	\end{equation}
+	with equality if and only if $u_i = v_i$ for all $1\leq i \leq m$.
+	\end{theorem}
+
+\begin{proof} Assume without loss of generality that $u_i~>~0$ and $v_i~>~0$.  We start with the 
+ definition of $LD(U||V)$ in Equation~\ref{eq:LogSumDist}, 
+\begin{eqnarray}
+LD(U||V) &=&\sum_{i=1}^m u_i\log\frac{u_i}{v_i} + \sum_{i=1}^m v_i\log\frac{v_i}{u_i} \nonumber \\ 
+&=& \sum_{i=1}^m (u_i- v_i)\log\frac{u_i}{v_i}  
+%&=& \sum_{i=1}^ma_i\log\frac{a_i}{b_i} - \sum_{i=1}^m b_i\log\frac{a_i}{b_i} \nonumber \\
+%&=& \nonumber
+\label{eq:ProofForLogSumIneq}
+\end{eqnarray}
+We show that value of each term  of the sum is
+ $(i)$ zero when $u_i =v_i$ and $(ii)$ greater than zero when $u_i \neq v_i$. Thus, the sum cannot be negative and,
+ moreover, it is greater than zero if there exist at least one pair of $u_i$ and $v_i$ such that $u_i \neq v_i$.
+
+For each term of the sum in Equation~\ref{eq:ProofForLogSumIneq}, we have to consider two cases: $u_i=v_i$, and $u_i\ne v_i$.\\
+Case~1 ($u_i = v_i$): In this case, since $(u_i-v_i) = 0$ and  $\log(u_i/u_i) = 0$, we have $(u_i- v_i)\log\frac{u_i}{v_i} = 0$. 
+\par
+\noindent
+Case~2 ($u_i\ne v_i$): In this case we have to consider two situations, $u_i < v_i$, and $u_i > v_i$. 
+If $u_i < v_i$,  both $(u_i-v_i)$ and $\log(u_i/v_i)$ are negative numbers, and hence, their product is greater than zero. On the other hand, if $u_i > v_i$,  both $(u_i-v_i)$ and $\log(u_i/v)$ are greater than zero, and hence, their product is also greater than zero.
+\par
+Thus, the sum in the right-side of Equation~\ref{eq:ProofForLogSumIneq} is zero, if $u_i = v_i$, for all $1\leq i \leq m$. On the other hand, if for one or more terms of the right-hand side of  Equation~\ref{eq:ProofForLogSumIneq} is  greater than zero, the right-hand side of the equation is greater than zero. This completes the if part of the proof.
+\par
+For the only if part of the proof it is easy to show that if sum is zero, then each individual term must be zero. Because if that is not the case then one or more terms of the sum must be negative; in that case $(u_i-v_i)$ and $\log(u_i/v_i)$ must have opposite signs, which is impossible. Similar arguments hold for the case when the sum is greater than zero.
+\end{proof}
+
+\par
+Next we establish a relation between $LD(U||V)$ and KL-distance. 
+ 
+\begin{theorem} (\emph{Log-Sums  distance and KL-distance relation})
+\label{LogSumAndKL-distRelation}
+For two sequences of positive numbers $U$ and $V$, 
+\begin{equation}
+LD(U||V) = 	(u-v)\log \frac{u}{v}+uD(p||q)+vD(q||p)
+\label{eq:logSumDivergence}
+\end{equation}
+where $u = \sum_{i=1}^m u_i$, $v = \sum_{i=1}^m v_i,$  $p_i = u_i/u$, and $q_i = v_i/v$ for all $1 \leq i \leq m$. 
+\end{theorem}
+Note that $p = \{p_1, p_2, \cdots, p_m\}$ and $\sum_{i=1}^m p_i = 1$. Also, $q = \{q_1, q_2, \cdots, q_m\}$ and $\sum_{i=1}^m q_i = 1$. 
+While $p$ and $q$ are not probability mass distributions, they can be used for measuring $D(p||q)$ and $D(q||p)$ because sum of the terms in $p$ (and $q$) is 1.
+\begin{proof} Since $u_i = up_i$, we have
+\begin{eqnarray}
+\sum_{i=1}^m u_i\log\frac{u_i}{v_i}  &=& \sum_{i=1}^m up_i\log\frac{up_i}{vq_i}\nonumber  \\
+&=& u \sum_{i+1}^m p_i\log\frac{u}{v} + u \sum_{i=1}^m p_i\log\frac{p_i}{q_i} \nonumber  \\
+&=& u \log\frac{u}{v} + uD(p||q) 
+\label{eq:LogSumU}
+\end{eqnarray}
+Similarly, it can be shown that,
+\begin{equation}\sum_{i=1}^m v_i\log\frac{v_i}{u_i}  = v \log\frac{v}{u} + vD(q||p) 
+\label{eq:LogSumV}
+\end{equation}
+For completing  the proof, first we use the definition of $LD(U||V)$ and then Equations~\ref{eq:LogSumU}~and~\ref{eq:LogSumV}.
+\begin{eqnarray} 
+	LD(U||V) &=& \sum_{i=1}^m u_i\log\frac{u_i}{v_i} + \sum_{i=1}^m v_i\log \frac{v_i}{u_i} \nonumber \\
+	&=&u\log\frac{u}{v}+ uD(p||q) +v\log\frac{v}{u} +vD(q||p) \nonumber\\
+	&=& (u-v)\log\frac{u}{v} +uD(p||q)+vD(q||p) \nonumber 
+\label{eq:Proof}
+\end{eqnarray}
+This completes the proof.
+\end{proof}
+
+\begin{corollary}(\emph{Log-sum and KL-distance inequality})
+\label{LogSumAndKL-distInequality}
+For $U,V, u, v, p,$ and $q$ as defined earlier,
+\begin{equation}
+LD(U||V) \geq uD(p||q)+vD(q||p).
+\label{eq:logSumDivergence}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Since
+for any two positive numbers $u$ and $v$, $(u~-~v)\log(u/v) \geq 0$ (see proof of Theorem~\ref{LogSumInequality}),
+the proof of the inequality follows immediately from Theorem~\ref{LogSumAndKL-distRelation}.
+\end{proof}
+
+In the next section we present methods that utilize the results in the 
+Sections~\ref{LinearRegressionModel}~and~\ref{sec:LogSumKLDiv}. 
+For identification of human activities.
+%$\matr{X}^k_{l'}^T$
+
+	\section{Activity Detection Algorithms}
+	\label{sec:ActivityDetectionAlgorithms}
+	
+	
+	Let $A = \{u,d,w\}$ be the set of activities \emph{walking upstairs}, \emph{walking downstairs}, and \emph{walking forward on a level floor}, respectively. 
+	Let the set $\{1,2,\cdots,m\}$ be denoted by $M$. During each activity $k$,  wireless sensing units with \emph{inertial measurement units} (IMUs) are connected to different locations on the body of a person for collecting motion data. Each sensor collects $m$ time series for a period of interest.
+\par	
+Let $X^u$, $X^d$ and $X^w$ be the observed time series data for activities $u$, $d$, and $w$ respectively. For $k \in A$, $m$-time series are denoted as $X^k = [X_1^k, X_2^k,\cdots,X_m^k]$. When $X_l^k$, for $k\in M$, is removed from $X^k$ and a unit column vector $\matr{1}$ of appropriate size is appended as the first column, let the new matrix be denoted as $\matr{X^k_{l'}}$. 
+That is, $\matr{X^k_{l'}} = [\matr{1},X^k_1,\cdots,X^k_{l-1}, X^k_{l+1},\cdots, X^k_m]$.
+	
+In this study, we use the method described in Section~\ref{LinearRegressionModel} for estimating $m$ linear models $\hat{f}_l^k(.)$, for each $k\in A$ and each $l\in M$, to relate $X^k_l$ with $\matr{X^k_{l'}}$. Thus,
+\begin{equation}
+\hat{X}^k_l = \hat{f}^k_l(\matr{X^k_{l'}}) =  \matr{X^k_{l'}}\hat{\beta}^k_l,
+\label{eq:betaEstK}
+\end{equation}
+where
+\begin{equation}
+\hat{\beta}^k_l = ((\matr{X^k_{l'}})^T\matr{X^k_{l'}})^{-1}(\matr{X^k_{l'}})^T\matr{X^k_{l}}. \nonumber
+\label{eq:ErrorK}
+\end{equation}
+
+Recall that $\hat{\beta}^k_l$ points in the steepest uphill direction and minimizes residual error $RSS(\hat{\beta}^k_l)$. For each activity $k \in A$ we have $m$ steepest uphill direction vectors $\hat{\beta}^k_l =[\hat{\beta}^k_{l0}, \hat{\beta}^k_{l1},\cdots, \hat{\beta}^k_{lm}]$, for  $l \in M$. Also, corresponding to each $\hat{\beta}^k_l$ we have a mean of $RSS(\hat{\beta}^k_l)$ value $\bar{e}^k_l$.  We will use these values to study several activity monitoring and recognition algorithms.
+\subsection{KL-distance Algorithms}
+\label{sec:DKDistanceAlgorithms}
+In this section we present two versions of KL-distance algorithms; One for asymmetric distance and the other for symmetric measures.
+%
+\subsubsection{KL-Distance algorithms}
+\label{sec:KLDistanceAlgorithm}
+The algorithms in this subsection consider $D(p||q)$, $D(q||)$, and $D(p||q) + D(q||)$ for activity identification.
+%
+\subsubsection{Symmetric and Weighted KL-distance  Algorithm}
+\label{sec:SymmetricAndWeightedKLDistanceAlgorithm}
+This version of the algorithm considers  $uD(p||q) + vD(q||)$ for activity identification.
+%
+\subsection{Log-Sum Algorithm}
+\label{sec:LogSumAlgorithm}
+
+This version of the algorithm considers $DL(U||V)$ for activity identification.
+
+%
+\subsection{Angle Similarity Algorithm}
+	\label{sec:AngleSimilarityAlgorithm}
+	
+	%Let for $i \in M, ^ue_i, ^de_i,$ and $^we_i$ be $i$th components of average errors for activities walking upstairs, walking downstairs, and walking forward on a level floor, respectively.  
+	 %Let $e^k = \sum_{i =1}^6 e_i^k$, for $k \in \{u,d,w\}$. Define $p_i^k = e_i^k/e^k$ for $i \in \{1,2,\cdots,6\}$.
+	%Let $p^k = \{p_1^k, p_2^k,\cdots,p_6^k\}$. 
+	%
+	%\par
+	%Let for $i \in \{1,2,\cdots,6\}$, $e_i^a$, be $i$th component of  average error for an unknown activity.
+	%Similarly, let $e^a = \sum_{i =1}^6 e_i^a$,  $q_i^a = e^a_i/e^a$, and $q^k = \{q_1^k, q_2^k,\cdots,q_6^k\}$.
+	%
+	%$$ 
+	%r^k_i = \frac{p^k_i}{q^a_i} =\frac{e^k_i/e^k}{e^a_i/e^a} = \frac{e^a}{e^k}\cdot\frac{e^k_i}{e^a_i} = r^k\cdot\frac{e^k_i}{e^a_i}
+	%$$
+	%
+ %\begin{eqnarray}
+	%D(p^k||q^a) &=& \sum_{i=1}^6 p^k_i \log \left(\frac{p_i^k}{p^a_i}\right)\\
+	%&=&  \sum_{i=1}^6 \frac{e_i^k}{e^k} \log \left(\frac{e^a}{e^k}\cdot\frac{e^k_i}{e^a_i}\right)\\
+	%&=& \frac{1}{e^k}\sum_{i=1}^6 e_i^k \left[ \log \left(\frac{e^a}{e^k}\right)+\log \left(\frac{e^k_i}{e^a_i}\right)\right]\\
+	%&=& \log \left(\frac{e^a}{e^k}\right)+\frac{1}{e^k}\sum_{i=1}^6 e_i^k \log \left(\frac{e^k_i}{e^a_i}\right)
+	%\end{eqnarray}
+	%
+	%\begin{equation}
+	%D(p^u||p^d) = \log \left(\frac{e^d}{e^u}\right)+\frac{1}{e^u}\sum_{i=1}^6 e_i^u \log \left(\frac{e^u_i}{e^d_i}\right)	
+	%\end{equation}
+	%
+
+	%%%%%%%%%% From Faisal
+	%Suppose data each row contains $p$ different features. For the experiment we select one feature at a time as a function of rest of the $p-1$ other features. In this case our $X$ is consist of $p-1$ features and $y$ is consist of the selected feature. In this way we can represent each row of the $p-1$ features $X$ as a function using equation  (\ref{equ:linearModel-function}). And we have a corresponding $\beta_s = [\beta_{s_0},\beta_{s_1},......\beta_{s_5}]^T$ associated with each selected feature. If we insert 1 before first element of $X$, then it can be represent as equation (\ref{equ:function-with-beta}). Now we can estimate the $\hat{\beta}_s$ for the selected feature using equation (\ref{equ:lin-regression}). 
+	%\par
+	%As we have $p$ different features we can select 1 feature out of them in $^pC_1$ different ways and use the above  
+	
+	\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

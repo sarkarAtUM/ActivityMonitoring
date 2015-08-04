@@ -1,0 +1,51 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\begin{document}
+	
+	\section{Linear Regression Model}
+	Let $X = [X_1,X_2,.....X_m]$  be a matrix of $n$ rows and $m$ columns, where each $X_j=[x_{1j},x_{2j}, \cdots, x_{nj}]^T$, for $1\le j\le m$, is a column of $n$ elements. Let $y = [y_1,y_2,......,y_n]^T$ be a column vector of $n$ elements.
+	
+	Let a linear model $f(.)$ relate  element $y_i$ of $y$ with $i$th row, [$x_{i1}, x_{i2},\cdots , x_{im}$], of $X$. Mathematically,
+	\begin{equation}
+	y_i =  f(x_{i1},x_{i2},\cdots, x_{im}) =\beta_0+\beta_1 x_{i1}+\cdots +\beta_m x_{im} 
+	\label{equ:linearModel-function}
+	\end{equation}
+	If we denote $ \beta =[\beta_0,\beta_1,......\beta_m]^T$ as a vector, Equation \ref{equ:linearModel-function} can be rewritten as,
+  
+	\begin{align}
+	       y_i &=[1,x_{i1},x_{i2},\cdots,x_{im}]\beta 
+	\end{align}
+	 
+	  
+	Inserting a 1 before first element of each row of $X$ and we get a $n$ by $(m+1)$ matrix, $\boldsymbol{X}$ = [1,$X$]. Now using matrix notation we can write,
+	\begin{equation}
+		\label{equ:function-with-beta}
+	y = f(\boldsymbol{X}) = \boldsymbol{X}\beta
+	\end{equation}
+	
+	Suppose $y$ and $X$ are obtained from observation of a system, and we want to estimate a model $\hat{f(.)}$ from them. This is equivalent to estimating values of $\beta$. Denoting estimate of $\beta$ as $\hat{\beta} = [\hat{\beta_0}, \hat{\beta_1}, \cdots,\hat{\beta_m}]$ from $y$ and $X$. 
+	\par
+	Assuming $\boldsymbol{X^TX}$ is positive definite we obtain $\hat{\beta}$, an approximation of $\beta$ from 
+	\begin{equation}
+	\label{equ:lin-regression}
+	\hat{\beta} = (\boldsymbol{X^TX})^{-1}\boldsymbol{X}^Ty.
+	\end{equation}
+	This approximation method in equation (\ref{eqa:lin-regression}) minimizes residual sum of squares[reference]. 
+	\begin{equation*}
+	\sum_{i=1}^{n}(\hat{y_i}-y_i)^2
+	\end{equation*}
+	From this estimated model $\hat{f}(.)$ we can get an estimate of 
+	\begin{equation}
+	\label{equ:estimated-y}
+	\hat{y} = \boldsymbol{X}\hat{\beta}.
+	\end{equation}
+	
+	\section{}
+	Suppose data each row contains $p$ different features. For the experiment we select one feature at a time as a function of rest of the $p-1$ other features. In this case our $X$ is consist of $p-1$ features and $y$ is consist of the selected feature. In this way we can represent each row of the $p-1$ features $X$ as a function using equation  (\ref{equ:linearModel-function}). And we have a corresponding $\beta_s = [\beta_{s_0},\beta_{s_1},......\beta_{s_5}]^T$ associated with each selected feature. If we insert 1 before first element of $X$, then it can be represent as equation (\ref{equ:function-with-beta}). Now we can estimate the $\hat{\beta}_s$ for the selected feature using equation (\ref{equ:lin-regression}). 
+	\par
+	As we have $p$ different features we can select 1 feature out of them in $^pC_1$ different ways and use the above  
+\end{document}

@@ -1,0 +1,18 @@
+\begin{thebibliography}{1}
+
+\bibitem{Cover2006}
+Thomas~M. Cover and Joy~A. Thomas.
+\newblock {\em {Elements of Information Theory}}.
+\newblock Wiley, 2nd edition, 2006.
+
+\bibitem{Hastie2008}
+Trevor Hastie, Robert Tibshirani, and Jerome Friedman.
+\newblock {\em {The Elements of Statistical Learning}}.
+\newblock Springer, 2nd edition, 2008.
+
+\bibitem{MatrixCompStewart1973}
+G.W. Stewart.
+\newblock {\em {Introduction to Matrix Computations}}.
+\newblock Academic Press, 1st edition, 1973.
+
+\end{thebibliography}
