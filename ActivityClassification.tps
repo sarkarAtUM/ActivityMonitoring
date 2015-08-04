@@ -11,13 +11,13 @@ MaxPos.x=-1
 MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
-NormalPos.right=1089
+NormalPos.right=1090
 NormalPos.bottom=628
 Class=LaTeXView
 Document=ActivityClassification.tex
 
 [Frame0_View0,0]
-TopLine=14
+TopLine=80
 Cursor=15379
 
 [SessionInfo]
